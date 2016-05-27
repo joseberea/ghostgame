@@ -85,30 +85,42 @@ public class LoadDictionaryContextListener implements ServletContextListener {
 	}
 
 	private void fillNode(Map<Character, NodeVO> map, String substring, int lineLength) {
+		NodeVO node = new NodeVO();
 		Map<Character, NodeVO> children = null;
 		Character c = null;
+		boolean possibleWinnerBranch = lineLength % 2 != 0;
 		if (!substring.isEmpty()) {
 			c = substring.charAt(0);
 			if (!map.containsKey(c)) {
 				children = new HashMap<Character, NodeVO>();
 				if(substring.length() > 1) {
 					fillNode(children, substring.substring(1), lineLength);
+				} else {
+					node.setLeaf(true);
 				}
-				map.put(c, new NodeVO(lineLength % 2 == 0, lineLength % 2 != 0, substring.length() == 1, lineLength, children));
+				node.setMaxLength(lineLength);
+				node.setChildren(children);
+				if(possibleWinnerBranch) {
+					node.setCanWin(true);
+				} else {
+					node.setCanLose(true);
+				}
+				map.put(c, node);
 			} else {
 				// Node already exists
-				NodeVO node = map.get(c);
+				node = map.get(c);
 				if(lineLength > node.getMaxLength()) {
 					node.setMaxLength(lineLength);
 				}
-				if(node.isLoser() && lineLength % 2 != 0) {
-					node.setLoser(false);
-				}
-				if(node.isWinner() && lineLength % 2 == 0) {
-					node.setWinner(false);
+				if(possibleWinnerBranch) {
+					node.setCanWin(true);
+				} else {
+					node.setCanLose(true);
 				}
 				if(substring.length() > 1) {
 					fillNode(node.getChildren(), substring.substring(1), lineLength);
+				} else {
+					node.setLeaf(true);
 				}
 			}
 		}
