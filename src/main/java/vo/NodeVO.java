@@ -3,35 +3,39 @@ package vo;
 import java.util.Map;
 
 public class NodeVO {
-	private boolean loser;
-	private boolean winner;
+	private boolean canLose = false;
+	private boolean canWin = false;
 	private boolean leaf;
 	private int maxLength;
 	Map<Character, NodeVO> children;
+	
+	public NodeVO() {
+		super();
+	}
 
 	public NodeVO(boolean loser, boolean winner, boolean leaf, int maxLength, Map<Character, NodeVO> children) {
 		super();
-		this.loser = loser;
-		this.winner = winner;
+		this.canLose = loser;
+		this.canWin = winner;
 		this.leaf = leaf;
 		this.maxLength = maxLength;
 		this.children = children;
 	}
 
-	public boolean isLoser() {
-		return loser;
+	public boolean isCanLose() {
+		return canLose;
 	}
 
-	public void setLoser(boolean loser) {
-		this.loser = loser;
+	public void setCanLose(boolean canLose) {
+		this.canLose = canLose;
 	}
 
-	public boolean isWinner() {
-		return winner;
+	public boolean isCanWin() {
+		return canWin;
 	}
 
-	public void setWinner(boolean winner) {
-		this.winner = winner;
+	public void setCanWin(boolean canWin) {
+		this.canWin = canWin;
 	}
 
 	public boolean isLeaf() {
@@ -57,4 +61,5 @@ public class NodeVO {
 	public void setChildren(Map<Character, NodeVO> children) {
 		this.children = children;
 	}
+
 }
