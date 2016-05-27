@@ -15,10 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
 	private static final Logger logger = LogManager.getLogger(ServletContextListener.class);
-	
-	@RequestMapping(value="home.htm")
-	public ModelAndView test(HttpServletRequest request) throws IOException{
+
+	@RequestMapping(value = "home.htm")
+	public ModelAndView goHome(HttpServletRequest request) throws IOException {
 		logger.info("ESTOY EN EL CONTROLLER");
+		request.getSession().getServletContext().setAttribute("string_", "");
+		request.getSession().getServletContext().setAttribute("branch_",
+				request.getSession().getServletContext().getAttribute("dictionary_"));
 		return new ModelAndView("home");
 	}
 }

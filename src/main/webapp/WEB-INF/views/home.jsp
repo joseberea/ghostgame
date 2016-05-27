@@ -12,6 +12,30 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link href="resources/css/custom.css" rel="stylesheet">
+
+<script type="text/javascript">
+	function putLetterAjax() {
+		$.ajax({
+			type : "POST",
+			url : "putLetter.htm",
+			dataType : 'text',
+			data : {
+				nextChar : $("#letter").val()
+			},
+			success : function(result) {
+				$("#string").html(result + "_")
+				waitingDialog.hide();
+			}
+		});
+	}
+	function putLetter() {
+		waitingDialog.show('Thinking ....', {
+			dialogSize : 'md',
+			progressType : 'info'
+		});
+		putLetterAjax();
+	}
+</script>
 </head>
 
 <body>
@@ -25,21 +49,45 @@
 	</div>
 
 	<div class="container-fluid">
-		<label class="control-label" for="inputLetter">Enter letter:</label>
-		<input type="text" class="form-control" id="inputLetter" maxlength="1"
-			style='text-transform: uppercase';> <a href="#" class="btn btn-success" onclick="waitingDialog.show('Thinking ....', {dialogSize: 'md', progressType: 'info'});waitingDialog.hide()">Submit</a>
+		<h1 id="string">_</h1>
+		<form role="form" class="form-horizontal" method="POST" action="#" name="inputForm" id="inputForm" onsubmit="putLetter();return false;">
+			<div class="form-group">
+				<div class="col-xs-3"></div> 
+				<div class="col-xs-4" style="padding-right:0px;">
+					<label for="letter" class="col-xs-8 control-label">Enter letter:</label>
+	            	<input type="text" id="letter" name="letter" class="form-control top-buffer-sm"	maxlength="1" 
+	            		style="text-transform: uppercase;width: 40px;" required></input>
+	        	</div>
+				<div class="col-xs-2" style="padding-left:0px;margin-left:0px;">
+	            	<button type="submit" class="btn btn-success">Submit</button>
+	        	</div>	        	
+	        	<div class="col-xs-3"></div> 
+			</div>
 	</div>
 
 	<div class="navbar navbar-default navbar-fixed-bottom footer">
 		<div class="container">
 			<div class="col-sm-12 navbar-text">
-				<p class="text-muted">Jose Manuel Berea Lozano</p>
+				<p class="text-muted">JoseManuelBereaLozano</p>
 			</div>
 		</div>
 	</div>
 
 	<script src="resources/js/jquery-1.9.1.min.js"></script>
 	<script src="resources/js/bootstrap.min.js"></script>
+	<script 
+		src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 	<script src="resources/js/waiting-dialog.js"></script>
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$('#inputForm input[type=text]').on('change invalid', function() {
+			    var textfield = $(this).get(0);
+			    textfield.setCustomValidity('');
+			    if (!textfield.validity.valid) {
+			      textfield.setCustomValidity('Please enter a letter... The Ghost is waiting!');
+			    }
+			});
+		});
+	</script>
 </body>
 </html>
