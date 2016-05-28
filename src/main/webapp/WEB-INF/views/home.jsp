@@ -6,7 +6,9 @@
 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Ghost Game</title>
 <link id="bootstrap-style" href="resources/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -17,6 +19,8 @@
 <script type="text/javascript">
 	function putLetterAjax() {
 		$("#string").append($("#letter").val());
+		$("#messageHuman").css('display', 'inline');
+		$("#messageHuman").html("I say '" + $("#letter").val() + "'");
 		$.ajax({
 			type : "POST",
 			url : "putLetter.htm",
@@ -26,11 +30,16 @@
 			},
 			success : function(status) {
 				if(status == ${stauts_not_exists}) {
-					alert("No se encuentra en el diccionario");
+					$('#modalLabel').html("You lose ....");
+					$('#modalBody').html("Sorry the string is not in the dictionary!");
+					$('#modalWord').html($("#string").html());
+					$('#modalDialog').modal('show');
 				} else if(status == ${stauts_is_a_word}) {
-					alert("Es una palabra de 4 o mas");
+					$('#modalLabel').html("You lose ....");
+					$('#modalBody').html("The string matches a word!");
+					$('#modalDialog').modal('show');
+					$('#modalWord').html($("#string").html());
 				} else if(status == ${stauts_continue}) {
-					alert("Seguimos");
 				}
 				waitingDialog.hide();
 			}
@@ -55,23 +64,54 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="container-fluid">
-		<h1 id="string">LETTERS: </h1>
-		<form role="form" class="form-horizontal" method="POST" action="#" name="inputForm" id="inputForm" onsubmit="putLetter();return false;">
-			<div class="form-group">
-				<div class="col-xs-3"></div> 
-				<div class="col-xs-4" style="padding-right:0px;">
-					<label for="letter" class="col-xs-8 control-label">Enter letter:</label>
-	            	<input type="text" id="letter" name="letter" class="form-control top-buffer-sm"	maxlength="1" 
-	            		style="text-transform: uppercase;width: 40px;" required></input>
-	        	</div>
-				<div class="col-xs-2" style="padding-left:0px;margin-left:0px;">
-	            	<button type="submit" class="btn btn-success">Submit</button>
-	        	</div>	        	
-	        	<div class="col-xs-3"></div> 
-			</div>
+	
+	<div class="jumbotron">
+    	<div class="container">
+    		<div class="col-md-6">
+    		<img src="http://2.bp.blogspot.com/-2Bo9UrNuuHI/UmvHqQw_uaI/AAAAAAAAEWs/Ekmz7VUys6Y/s1600/ghosty.png" style="max-height: 80px;">
+    		</div>
+    		<div class="col-md-6" style="text-align: right;">
+	            <div id="messageHuman" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
+    			<img src="http://juststickers.in/wp-content/uploads/2015/04/Heisenberg.png" style="max-height: 80px; display: inline">
+    		</div>
+	      	<div style="text-align: center;">
+	        	<h1 id="string">String: </h1>
+      		</div>
+    	</div>
+    </div>	
+	
+	<div class="container">
+		<div class="col-md-4 col-md-offset-4">
+			<form id="inputForm" class="form-inline" onsubmit="putLetter();return false;" style="padding-bottom: 60px;">
+			  <div class="form-group">
+				<label for="letter">Enter your next letter:</label>
+				<input type="text" class="form-control" id="letter" maxlength="1" 
+		        	style="text-transform: uppercase;width: 40px;display: inline;" required>
+		        <button type="submit" class="btn btn-success">Submit</button>
+			  </div>
+			</form>
+		</div>
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modalDialog"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-md">
+	    <div class="modal-content">
+	      <div id="modalLabel" class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h2 id="modalTitle" class="modal-title"></h2>
+	      </div>
+	      <div class="modal-body">
+	        <h2 id="modalWord"></h2>
+	        <h2 id="modalBody"></h2>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-success" data-dismiss="modal">Let's play again!</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
 
 	<div class="navbar navbar-default navbar-fixed-bottom footer">
 		<div class="container">
@@ -88,6 +128,9 @@
 	<script src="resources/js/waiting-dialog.js"></script>
 	<script type="text/javascript">
 		$( document ).ready(function() {
+			$('#modalDialog').on('hidden.bs.modal', function () {
+				location.reload(true);
+			})
 			$('#inputForm input[type=text]').on('change invalid', function() {
 			    var textfield = $(this).get(0);
 			    textfield.setCustomValidity('');

@@ -31,7 +31,7 @@ public class MainController {
 		if(branch_.containsKey(nextChar)) {
 			status = branch_.get(nextChar);
 			if(status instanceof NodeVO) {
-				if(((NodeVO) status).isLeaf() && string_.length() > 3) {
+				if(((NodeVO) status).isLeaf() && string_.length() >= 3) {
 					// End
 					return Const.STATUS_IS_A_WORD;
 				} else {
