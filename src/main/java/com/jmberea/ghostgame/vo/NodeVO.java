@@ -1,4 +1,4 @@
-package vo;
+package com.jmberea.ghostgame.vo;
 
 import java.util.Map;
 

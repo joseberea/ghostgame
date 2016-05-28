@@ -13,7 +13,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import vo.NodeVO;
+import com.jmberea.ghostgame.vo.NodeVO;
 
 /**
  * Application Lifecycle Listener implementation class

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import vo.NodeVO;
+import com.jmberea.ghostgame.util.Const;
+import com.jmberea.ghostgame.vo.NodeVO;
 
 @Controller
 public class MainController {
@@ -23,28 +24,27 @@ public class MainController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/putLetter.htm", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody
-	String putLetter(HttpServletRequest request, @RequestParam("nextChar") Character nextChar) {
-		logger.info("CHARACTER: " + nextChar);
-		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
+	public @ResponseBody Integer putLetter(HttpServletRequest request, @RequestParam("nextChar") Character nextChar) {
 		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute("branch_");
+		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
+		Object status = null;
 		if(branch_.containsKey(nextChar)) {
-			Object element = branch_.get(nextChar);
-			if(element instanceof NodeVO) {
-				if(((NodeVO) element).getChildren().isEmpty()) {
-					string_ += nextChar + ": LEAF";					
+			status = branch_.get(nextChar);
+			if(status instanceof NodeVO) {
+				if(((NodeVO) status).isLeaf() && string_.length() > 3) {
+					// End
+					return Const.STATUS_IS_A_WORD;
 				} else {
-					string_ += nextChar;
-					request.getSession().getServletContext().setAttribute("branch_", ((NodeVO) element).getChildren());
+					request.getSession().getServletContext().setAttribute("branch_", ((NodeVO) status).getChildren());
 				}
 			} else {
+				// First move
 				request.getSession().getServletContext().setAttribute("branch_", branch_.get(nextChar));
-				string_ += nextChar;
 			}
 		} else {
-			string_ += nextChar + ": NO EXIST";
+			return Const.STATUS_NOT_EXISTS;
 		}
-		request.getSession().getServletContext().setAttribute("string_", string_);
-		return string_;
+		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);
+		return Const.STATUS_CONTINUE;
 	}
 }

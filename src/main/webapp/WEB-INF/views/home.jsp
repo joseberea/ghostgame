@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/views/common/common.jsp"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -15,6 +16,7 @@
 
 <script type="text/javascript">
 	function putLetterAjax() {
+		$("#string").append($("#letter").val());
 		$.ajax({
 			type : "POST",
 			url : "putLetter.htm",
@@ -22,8 +24,14 @@
 			data : {
 				nextChar : $("#letter").val()
 			},
-			success : function(result) {
-				$("#string").html(result + "_")
+			success : function(status) {
+				if(status == ${stauts_not_exists}) {
+					alert("No se encuentra en el diccionario");
+				} else if(status == ${stauts_is_a_word}) {
+					alert("Es una palabra de 4 o mas");
+				} else if(status == ${stauts_continue}) {
+					alert("Seguimos");
+				}
 				waitingDialog.hide();
 			}
 		});
@@ -49,7 +57,7 @@
 	</div>
 
 	<div class="container-fluid">
-		<h1 id="string">_</h1>
+		<h1 id="string">LETTERS: </h1>
 		<form role="form" class="form-horizontal" method="POST" action="#" name="inputForm" id="inputForm" onsubmit="putLetter();return false;">
 			<div class="form-group">
 				<div class="col-xs-3"></div> 
