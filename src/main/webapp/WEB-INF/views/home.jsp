@@ -17,13 +17,47 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <script type="text/javascript">
-	function putLetterAjax() {
+	function ghostLetterAjax() {
+		$("#messageHuman").css('display', 'none');
+		$.ajax({
+			type : "GET",
+			url : "ghostLetter.htm",
+			success : function(response) {
+				var status = response.status;
+				var letter = response.letter;
+				$("#string").append(letter);
+				if(status == ${stauts_is_a_word}) {
+					$('#modalLabel').html("You win ....");
+					$('#modalBody').html("The string matches a word!");
+					$('#modalDialog').modal('show');
+					$('#modalWord').html($("#string").html());
+				} else if(status == ${stauts_continue}) {
+					$("#humanForm").show();
+					$("#ghostTurn").hide();
+					$("#messageGhost").css('display', 'inline');
+					$("#messageGhost").html("I say '" + letter + "'");
+				}
+				waitingDialog.hide();
+			}
+		});
+	}
+	
+	function ghostLetter() {
+		waitingDialog.show('Thinking ....', {
+			dialogSize : 'md',
+			progressType : 'info'
+		});
+		ghostLetterAjax();
+	}
+
+	function humanLetterAjax() {
 		$("#string").append($("#letter").val());
+		$("#messageGhost").css('display', 'none');
 		$("#messageHuman").css('display', 'inline');
 		$("#messageHuman").html("I say '" + $("#letter").val() + "'");
 		$.ajax({
 			type : "POST",
-			url : "putLetter.htm",
+			url : "humanLetter.htm",
 			dataType : 'text',
 			data : {
 				nextChar : $("#letter").val()
@@ -40,23 +74,26 @@
 					$('#modalDialog').modal('show');
 					$('#modalWord').html($("#string").html());
 				} else if(status == ${stauts_continue}) {
+					$("#humanForm").hide();
+					$("#ghostTurn").show();
 				}
 				waitingDialog.hide();
 			}
 		});
 	}
-	function putLetter() {
+	
+	function humanLetter() {
 		waitingDialog.show('Thinking ....', {
 			dialogSize : 'md',
 			progressType : 'info'
 		});
-		putLetterAjax();
+		humanLetterAjax();
 	}
 </script>
 </head>
 
 <body>
-
+	<!-- NAVBAR -->
 	<div class="navbar navbar-default navbar-fixed">
 		<div class="container">
 			<div class="navbar-header">
@@ -65,10 +102,12 @@
 		</div>
 	</div>
 	
+	<!-- JUMBOTRON WITH STRING RESULT -->
 	<div class="jumbotron">
     	<div class="container">
-    		<div class="col-md-6">
-    		<img src="http://2.bp.blogspot.com/-2Bo9UrNuuHI/UmvHqQw_uaI/AAAAAAAAEWs/Ekmz7VUys6Y/s1600/ghosty.png" style="max-height: 80px;">
+    		<div class="col-md-6" style="text-align: left;">
+    			<img src="http://2.bp.blogspot.com/-2Bo9UrNuuHI/UmvHqQw_uaI/AAAAAAAAEWs/Ekmz7VUys6Y/s1600/ghosty.png" style="max-height: 80px;">
+    			<div id="messageGhost" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
     		</div>
     		<div class="col-md-6" style="text-align: right;">
 	            <div id="messageHuman" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
@@ -79,10 +118,11 @@
       		</div>
     	</div>
     </div>	
-	
+
+	<!-- HUMAN & GHOST FORM -->	
 	<div class="container">
-		<div class="col-md-4 col-md-offset-4">
-			<form id="inputForm" class="form-inline" onsubmit="putLetter();return false;" style="padding-bottom: 60px;">
+		<div class="col-md-4 col-md-offset-4" style="text-align: center;">
+			<form id="humanForm" class="form-inline" onsubmit="humanLetter();return false;" style="padding-bottom: 60px;">
 			  <div class="form-group">
 				<label for="letter">Enter your next letter:</label>
 				<input type="text" class="form-control" id="letter" maxlength="1" 
@@ -90,6 +130,7 @@
 		        <button type="submit" class="btn btn-success">Submit</button>
 			  </div>
 			</form>
+			<button id="ghostTurn" class="btn btn-success" onclick="ghostLetter()">Ghost turn</button>
 		</div>
 	</div>
 
@@ -131,13 +172,14 @@
 			$('#modalDialog').on('hidden.bs.modal', function () {
 				location.reload(true);
 			})
-			$('#inputForm input[type=text]').on('change invalid', function() {
+			$('#humanForm input[type=text]').on('change invalid', function() {
 			    var textfield = $(this).get(0);
 			    textfield.setCustomValidity('');
 			    if (!textfield.validity.valid) {
 			      textfield.setCustomValidity('Please enter a letter... The Ghost is waiting!');
 			    }
 			});
+			$("#ghostTurn").hide();
 		});
 	</script>
 </body>

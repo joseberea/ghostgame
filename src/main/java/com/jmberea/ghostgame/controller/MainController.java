@@ -23,8 +23,8 @@ public class MainController {
 	private static final Logger logger = LogManager.getLogger(ServletContextListener.class);
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/putLetter.htm", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Integer putLetter(HttpServletRequest request, @RequestParam("nextChar") Character nextChar) {
+	@RequestMapping(value = "/humanLetter.htm", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Integer processHumanLetter(HttpServletRequest request, @RequestParam("nextChar") Character nextChar) {
 		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute("branch_");
 		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
 		Object status = null;
