@@ -22,6 +22,6 @@ public class HomeController {
 		request.getSession().getServletContext().setAttribute("string_", "");
 		request.getSession().getServletContext().setAttribute("branch_",
 				request.getSession().getServletContext().getAttribute("dictionary_"));
-		return new ModelAndView("home");
+		return new ModelAndView("game");
 	}
 }
