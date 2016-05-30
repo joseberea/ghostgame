@@ -100,10 +100,12 @@ public class LoadDictionaryContextListener implements ServletContextListener {
 				}
 				node.setMaxLength(lineLength);
 				node.setChildren(children);
-				if(possibleWinnerBranch) {
-					node.setCanWin(true);
-				} else {
-					node.setCanLose(true);
+				if(lineLength > 3) {
+					if(possibleWinnerBranch) {
+						node.setCanWin(true);
+					} else {
+						node.setCanLose(true);
+					}
 				}
 				map.put(c, node);
 			} else {
@@ -112,10 +114,12 @@ public class LoadDictionaryContextListener implements ServletContextListener {
 				if(lineLength > node.getMaxLength()) {
 					node.setMaxLength(lineLength);
 				}
-				if(possibleWinnerBranch) {
-					node.setCanWin(true);
-				} else {
-					node.setCanLose(true);
+				if(lineLength > 3) {
+					if(possibleWinnerBranch) {
+						node.setCanWin(true);
+					} else {
+						node.setCanLose(true);
+					}					
 				}
 				if(substring.length() > 1) {
 					fillNode(node.getChildren(), substring.substring(1), lineLength);

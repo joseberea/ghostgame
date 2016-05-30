@@ -39,10 +39,13 @@ public class GhostController {
 		List<Character> winnerBranches = new ArrayList<Character>();
 		List<Character> neutralBranches = new ArrayList<Character>();
 		List<Character> loserBranches = new ArrayList<Character>();
+		List<Character> drawBranches = new ArrayList<Character>();
 		
 		for(Entry<Character, NodeVO> entry : branch_.entrySet()) {
 			NodeVO childNode = entry.getValue();
-			if(childNode.isCanWin() && !childNode.isCanLose()) { // Winners
+			if(childNode.getChildren().isEmpty() && string_.length() < 3) {
+				drawBranches.add(entry.getKey());
+			} else if(childNode.isCanWin() && !childNode.isCanLose()) { // Winners
 				winnerBranches.add(entry.getKey());
 			} else if(childNode.isCanWin() && childNode.isCanLose()) { // Neutral
 				neutralBranches.add(entry.getKey());
@@ -70,7 +73,7 @@ public class GhostController {
 			ghostResponse.setLetter(nextChar);
 			ghostResponse.setStatus(Const.STATUS_CONTINUE);
 			request.getSession().getServletContext().setAttribute("branch_", branch_);
-		} else {
+		} else if(!loserBranches.isEmpty()) {
 			position = randomGenerator.nextInt(loserBranches.size());
 			branch_ = branch_.get(loserBranches.get(position)).getChildren();
 			nextChar = loserBranches.get(position);
@@ -81,6 +84,13 @@ public class GhostController {
 				ghostResponse.setStatus(Const.STATUS_CONTINUE);		
 				request.getSession().getServletContext().setAttribute("branch_", branch_);
 			}
+		} else {
+			position = randomGenerator.nextInt(drawBranches.size());
+			branch_ = branch_.get(drawBranches.get(position)).getChildren();
+			nextChar = drawBranches.get(position);
+			ghostResponse.setLetter(nextChar);
+			ghostResponse.setStatus(Const.STATUS_DRAW);
+			request.getSession().getServletContext().setAttribute("branch_", branch_);
 		}
 		
 		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);

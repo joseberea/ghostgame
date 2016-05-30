@@ -36,6 +36,11 @@
 					$("#ghostTurn").hide();
 					$("#messageGhost").css('display', 'inline');
 					$("#messageGhost").html("I say '" + letter + "'");
+				} else if(status == ${stauts_draw}) {
+					$('#modalLabel').html("Draw ....");
+					$('#modalBody').html("The string matches a word, but is shorter than 4!");
+					$('#modalDialog').modal('show');
+					$('#modalWord').html($("#string").html());
 				}
 				waitingDialog.hide();
 			}
@@ -76,6 +81,11 @@
 				} else if(status == ${stauts_continue}) {
 					$("#humanForm").hide();
 					$("#ghostTurn").show();
+				} else if(status == ${stauts_draw}) {
+					$('#modalLabel').html("Draw ....");
+					$('#modalBody').html("The string matches a word, but is shorter than 4!");
+					$('#modalDialog').modal('show');
+					$('#modalWord').html($("#string").html());
 				}
 				waitingDialog.hide();
 			}
