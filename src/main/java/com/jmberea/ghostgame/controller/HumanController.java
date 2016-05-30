@@ -18,7 +18,7 @@ import com.jmberea.ghostgame.util.Const;
 import com.jmberea.ghostgame.vo.NodeVO;
 
 @Controller
-public class MainController {
+public class HumanController {
 
 	private static final Logger logger = LogManager.getLogger(ServletContextListener.class);
 	
