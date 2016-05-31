@@ -121,7 +121,7 @@
     		</div>
     		<div class="col-md-6" style="text-align: right;">
 	            <div id="messageHuman" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
-    			<img src="http://juststickers.in/wp-content/uploads/2015/04/Heisenberg.png" style="max-height: 80px; display: inline">
+    			<img src="http://2014hs.igem.org/wiki/images/a/aa/Team_icon.png" style="max-height: 80px; display: inline">
     		</div>
 	      	<div style="text-align: center;">
 	        	<h1 id="string">String: </h1>

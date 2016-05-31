@@ -85,48 +85,58 @@ public class LoadDictionaryContextListener implements ServletContextListener {
 	}
 
 	private void fillNode(Map<Character, NodeVO> map, String substring, int lineLength) {
-		NodeVO node = new NodeVO();
-		Map<Character, NodeVO> children = null;
 		Character c = null;
 		boolean possibleWinnerBranch = lineLength % 2 != 0;
 		if (!substring.isEmpty()) {
 			c = substring.charAt(0);
 			if (!map.containsKey(c)) {
-				children = new HashMap<Character, NodeVO>();
-				if(substring.length() > 1) {
-					fillNode(children, substring.substring(1), lineLength);
-				} else {
-					node.setLeaf(true);
-				}
-				node.setMaxLength(lineLength);
-				node.setChildren(children);
-				if(lineLength > 3) {
-					if(possibleWinnerBranch) {
-						node.setCanWin(true);
-					} else {
-						node.setCanLose(true);
-					}
-				}
-				map.put(c, node);
+				setNewNode(substring, lineLength, possibleWinnerBranch, c, map);
 			} else {
-				// Node already exists
-				node = map.get(c);
-				if(lineLength > node.getMaxLength()) {
-					node.setMaxLength(lineLength);
-				}
-				if(lineLength > 3) {
-					if(possibleWinnerBranch) {
-						node.setCanWin(true);
-					} else {
-						node.setCanLose(true);
-					}					
-				}
-				if(substring.length() > 1) {
-					fillNode(node.getChildren(), substring.substring(1), lineLength);
-				} else {
-					node.setLeaf(true);
-				}
+				updateNode(substring, lineLength, possibleWinnerBranch, c, map);
 			}
+		}
+	}
+	
+	private void setNewNode(String substring, Integer lineLength, Boolean possibleWinnerBranch,
+			Character c, Map<Character, NodeVO> map) {
+		NodeVO node = new NodeVO();
+		Map<Character, NodeVO> children = null;
+		children = new HashMap<Character, NodeVO>();
+		if(substring.length() > 1) {
+			fillNode(children, substring.substring(1), lineLength);
+		} else {
+			node.setLeaf(true);
+		}
+		node.setMaxLength(lineLength);
+		node.setChildren(children);
+		if(lineLength > 3) {
+			if(possibleWinnerBranch) {
+				node.setCanWin(true);
+			} else {
+				node.setCanLose(true);
+			}
+		}
+		map.put(c, node);
+	}
+	
+	private void updateNode(String substring, Integer lineLength, Boolean possibleWinnerBranch, 
+			Character c, Map<Character, NodeVO> map) {
+		NodeVO node = new NodeVO();
+		node = map.get(c);
+		if(lineLength > node.getMaxLength()) {
+			node.setMaxLength(lineLength);
+		}
+		if(lineLength > 3) {
+			if(possibleWinnerBranch) {
+				node.setCanWin(true);
+			} else {
+				node.setCanLose(true);
+			}					
+		}
+		if(substring.length() > 1) {
+			fillNode(node.getChildren(), substring.substring(1), lineLength);
+		} else {
+			node.setLeaf(true);
 		}
 	}
 

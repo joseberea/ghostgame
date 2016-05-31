@@ -34,13 +34,11 @@ public class HumanController {
 				if(((NodeVO) status).getChildren().isEmpty() && string_.length() < 3) {
 					return Const.STATUS_DRAW;
 				} if(((NodeVO) status).isLeaf() && string_.length() >= 3) {
-					// End
 					return Const.STATUS_IS_A_WORD;
 				} else {
 					request.getSession().getServletContext().setAttribute("branch_", ((NodeVO) status).getChildren());
 				}
 			} else {
-				// First move
 				request.getSession().getServletContext().setAttribute("branch_", branch_.get(nextChar));
 			}
 		} else {

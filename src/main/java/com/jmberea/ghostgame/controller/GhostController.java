@@ -29,17 +29,14 @@ public class GhostController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/ghostLetter.htm", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody GhostResponseVO getGhostLetter(HttpServletRequest request) {
-		Random randomGenerator = new Random();
-		GhostResponseVO ghostResponse = new GhostResponseVO();
-		Character nextChar;
-		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
-		Integer maxLength = 0;
-		Integer position;
-		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute("branch_");
+		GhostResponseVO ghostResponse;
 		List<Character> winnerBranches = new ArrayList<Character>();
 		List<Character> neutralBranches = new ArrayList<Character>();
 		List<Character> loserBranches = new ArrayList<Character>();
 		List<Character> drawBranches = new ArrayList<Character>();
+		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute("branch_");
+		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
+		Integer maxLength = 0;
 		
 		for(Entry<Character, NodeVO> entry : branch_.entrySet()) {
 			NodeVO childNode = entry.getValue();
@@ -60,40 +57,54 @@ public class GhostController {
 		}
 		
 		if(!winnerBranches.isEmpty()) {
-			position = randomGenerator.nextInt(winnerBranches.size());
-			branch_ = branch_.get(winnerBranches.get(position)).getChildren();
-			nextChar = winnerBranches.get(position);
-			ghostResponse.setLetter(nextChar);
-			ghostResponse.setStatus(Const.STATUS_CONTINUE);
-			request.getSession().getServletContext().setAttribute("branch_", branch_);
+			ghostResponse = setStatus(branch_, winnerBranches, Const.STATUS_CONTINUE, string_, request);
 		} else if(!neutralBranches.isEmpty()) {
-			position = randomGenerator.nextInt(neutralBranches.size());
-			branch_ = branch_.get(neutralBranches.get(position)).getChildren();
-			nextChar = neutralBranches.get(position);
-			ghostResponse.setLetter(nextChar);
-			ghostResponse.setStatus(Const.STATUS_CONTINUE);
-			request.getSession().getServletContext().setAttribute("branch_", branch_);
+			ghostResponse = setStatus(branch_, neutralBranches, Const.STATUS_CONTINUE, string_, request);
 		} else if(!loserBranches.isEmpty()) {
-			position = randomGenerator.nextInt(loserBranches.size());
-			nextChar = loserBranches.get(position);
-			ghostResponse.setLetter(nextChar);
-			if(branch_.get(loserBranches.get(position)).isLeaf() && string_.length() >= 3) {
-				ghostResponse.setStatus(Const.STATUS_IS_A_WORD);
-			} else {
-				branch_ = branch_.get(loserBranches.get(position)).getChildren();
-				ghostResponse.setStatus(Const.STATUS_CONTINUE);		
-				request.getSession().getServletContext().setAttribute("branch_", branch_);
-			}
+			ghostResponse = setLoserStatus(branch_, loserBranches, string_, request);
 		} else {
-			position = randomGenerator.nextInt(drawBranches.size());
-			branch_ = branch_.get(drawBranches.get(position)).getChildren();
-			nextChar = drawBranches.get(position);
-			ghostResponse.setLetter(nextChar);
-			ghostResponse.setStatus(Const.STATUS_DRAW);
-			request.getSession().getServletContext().setAttribute("branch_", branch_);
+			ghostResponse = setStatus(branch_, drawBranches, Const.STATUS_DRAW, string_, request);
 		}
 		
+		return ghostResponse;
+	}
+	
+	private GhostResponseVO setStatus(Map<Character, NodeVO> branch_, List<Character> branchList, 
+			Integer status, String string_, HttpServletRequest request) {
+		GhostResponseVO ghostResponse = new GhostResponseVO();
+		Random randomGenerator = new Random();
+		Character nextChar;
+		Integer position;
+		position = randomGenerator.nextInt(branchList.size());
+		branch_ = branch_.get(branchList.get(position)).getChildren();
+		nextChar = branchList.get(position);
+		ghostResponse.setLetter(nextChar);
+		ghostResponse.setStatus(status);
+		request.getSession().getServletContext().setAttribute("branch_", branch_);
 		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);
 		return ghostResponse;
 	}
+	
+	private GhostResponseVO setLoserStatus(Map<Character, NodeVO> branch_, List<Character> branchList, 
+			String string_, HttpServletRequest request) {
+		GhostResponseVO ghostResponse = new GhostResponseVO();
+		Random randomGenerator = new Random();
+		Character nextChar;
+		Integer position;
+		position = randomGenerator.nextInt(branchList.size());
+		nextChar = branchList.get(position);
+		ghostResponse.setLetter(nextChar);
+		if(branch_.get(branchList.get(position)).isLeaf() && string_.length() >= 3) {
+			ghostResponse.setStatus(Const.STATUS_IS_A_WORD);
+		} else {
+			branch_ = branch_.get(branchList.get(position)).getChildren();
+			ghostResponse.setStatus(Const.STATUS_CONTINUE);		
+			request.getSession().getServletContext().setAttribute("branch_", branch_);
+			
+		}
+		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);
+		return ghostResponse;
+	}
+	
+	
 }
