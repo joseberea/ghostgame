@@ -43,14 +43,14 @@ public class GhostController {
 		
 		for(Entry<Character, NodeVO> entry : branch_.entrySet()) {
 			NodeVO childNode = entry.getValue();
-			if(childNode.getChildren().isEmpty() && string_.length() < 3) {
+			if(childNode.isLeaf() && string_.length() < 3) {
 				drawBranches.add(entry.getKey());
-			} else if(childNode.isCanWin() && !childNode.isCanLose()) { // Winners
+			} else if(childNode.isCanWin() && !childNode.isCanLose() && !(childNode.isLeaf() && string_.length() >= 3)) { // Winners
 				winnerBranches.add(entry.getKey());
-			} else if(childNode.isCanWin() && childNode.isCanLose()) { // Neutral
+			} else if(childNode.isCanWin() && childNode.isCanLose() && !(childNode.isLeaf() && string_.length() >= 3)) { // Neutral
 				neutralBranches.add(entry.getKey());
 			} else if(winnerBranches.isEmpty()) { // Losers
-				if(loserBranches.isEmpty() || childNode.getMaxLength() == maxLength) {
+				if(loserBranches.isEmpty() || childNode.getMaxLength() == maxLength || maxLength == 0) {
 					loserBranches.add(entry.getKey());
 				} else if(childNode.getMaxLength() > maxLength) {
 					loserBranches.clear();
@@ -75,12 +75,12 @@ public class GhostController {
 			request.getSession().getServletContext().setAttribute("branch_", branch_);
 		} else if(!loserBranches.isEmpty()) {
 			position = randomGenerator.nextInt(loserBranches.size());
-			branch_ = branch_.get(loserBranches.get(position)).getChildren();
 			nextChar = loserBranches.get(position);
 			ghostResponse.setLetter(nextChar);
 			if(branch_.get(loserBranches.get(position)).isLeaf() && string_.length() >= 3) {
 				ghostResponse.setStatus(Const.STATUS_IS_A_WORD);
 			} else {
+				branch_ = branch_.get(loserBranches.get(position)).getChildren();
 				ghostResponse.setStatus(Const.STATUS_CONTINUE);		
 				request.getSession().getServletContext().setAttribute("branch_", branch_);
 			}
