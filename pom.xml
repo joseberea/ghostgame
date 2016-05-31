@@ -37,6 +37,17 @@
 			<version>1.9.5</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-testng</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.5</version>
+		</dependency>
+
 
 		<!-- MAPPER -->
 		<dependency>
