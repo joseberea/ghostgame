@@ -3,6 +3,7 @@ package com.jmberea.ghostgame.util;
 public class Const {
 	/* Branch name */
 	public static final String DICTIONARY_CTX_NAME = "dictionary_";
+	public static final String BRANCH_CTX_NAME = "branch_";
 	
 	/* String name */
 	public static final String STRING_CTX_NAME = "string_";

@@ -15,6 +15,9 @@ public class HomeController {
 	@RequestMapping(value = "home.htm")
 	public ModelAndView goHome(HttpServletRequest request) throws IOException {
 		request.getSession().getServletContext().setAttribute(Const.STRING_CTX_NAME, "");
+		request.getSession().getServletContext().setAttribute(Const.BRANCH_CTX_NAME,
+				request.getSession().getServletContext().getAttribute(Const.DICTIONARY_CTX_NAME));
+
 		return new ModelAndView("game");
 	}
 }

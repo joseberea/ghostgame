@@ -43,7 +43,7 @@ public class HumanTest {
 		LoadDictionaryContextListener listener = new LoadDictionaryContextListener();
 		listener.contextInitialized(event);
 
-		request.getSession().getServletContext().setAttribute(Const.DICTIONARY_CTX_NAME,
+		request.getSession().getServletContext().setAttribute(Const.BRANCH_CTX_NAME,
 				event.getServletContext().getAttribute(Const.DICTIONARY_CTX_NAME));
 		request.getSession().getServletContext().setAttribute(Const.STRING_CTX_NAME, "");
 	}

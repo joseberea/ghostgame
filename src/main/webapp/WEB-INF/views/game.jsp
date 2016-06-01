@@ -17,6 +17,19 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <script type="text/javascript">
+	function matchesWord() {
+		$('#modalBody').html("The string matches a word!");
+		$('#modalDialog').modal('show');
+		$('#modalWord').html($("#string").html());
+	}
+	
+	function matchesShortWord() {
+		$('#modalLabel').html("Draw ....");
+		$('#modalBody').html("The string matches a word, but is shorter than 4!");
+		$('#modalDialog').modal('show');
+		$('#modalWord').html($("#string").html());
+	}
+	
 	function ghostLetterAjax() {
 		$("#messageHuman").css('display', 'none');
 		$.ajax({
@@ -28,19 +41,14 @@
 				$("#string").append(letter);
 				if(status == ${stauts_is_a_word}) {
 					$('#modalLabel').html("You win ....");
-					$('#modalBody').html("The string matches a word!");
-					$('#modalDialog').modal('show');
-					$('#modalWord').html($("#string").html());
+					matchesWord();
 				} else if(status == ${stauts_continue}) {
 					$("#humanForm").show();
 					$("#ghostTurn").hide();
 					$("#messageGhost").css('display', 'inline');
 					$("#messageGhost").html("I say '" + letter + "'");
 				} else if(status == ${stauts_draw}) {
-					$('#modalLabel').html("Draw ....");
-					$('#modalBody').html("The string matches a word, but is shorter than 4!");
-					$('#modalDialog').modal('show');
-					$('#modalWord').html($("#string").html());
+					matchesShortWord();
 				}
 				waitingDialog.hide();
 			}
@@ -75,17 +83,12 @@
 					$('#modalDialog').modal('show');
 				} else if(status == ${stauts_is_a_word}) {
 					$('#modalLabel').html("You lose ....");
-					$('#modalBody').html("The string matches a word!");
-					$('#modalDialog').modal('show');
-					$('#modalWord').html($("#string").html());
+					matchesWord();
 				} else if(status == ${stauts_continue}) {
 					$("#humanForm").hide();
 					$("#ghostTurn").show();
 				} else if(status == ${stauts_draw}) {
-					$('#modalLabel').html("Draw ....");
-					$('#modalBody').html("The string matches a word, but is shorter than 4!");
-					$('#modalDialog').modal('show');
-					$('#modalWord').html($("#string").html());
+					matchesShortWord();
 				}
 				waitingDialog.hide();
 			}
@@ -116,12 +119,12 @@
 	<div class="jumbotron">
     	<div class="container">
     		<div class="col-md-6" style="text-align: left;">
-    			<img src="http://2.bp.blogspot.com/-2Bo9UrNuuHI/UmvHqQw_uaI/AAAAAAAAEWs/Ekmz7VUys6Y/s1600/ghosty.png" style="max-height: 80px;">
+    			<img src="resources/img/ghost.png" style="max-height: 80px;">
     			<div id="messageGhost" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
     		</div>
     		<div class="col-md-6" style="text-align: right;">
 	            <div id="messageHuman" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
-    			<img src="http://2014hs.igem.org/wiki/images/a/aa/Team_icon.png" style="max-height: 80px; display: inline">
+    			<img src="resources/img/player.png" style="max-height: 80px; display: inline">
     		</div>
 	      	<div style="text-align: center;">
 	        	<h1 id="string">String: </h1>
@@ -177,6 +180,7 @@
 	<script 
 		src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 	<script src="resources/js/waiting-dialog.js"></script>
+	<script src="resources/js/game.js"></script>
 	<script type="text/javascript">
 		$( document ).ready(function() {
 			$('#modalDialog').on('hidden.bs.modal', function () {
