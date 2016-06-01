@@ -62,6 +62,11 @@ public class GhostController {
 		return getGhostResponse(request);
 	}
 	
+	/**
+	 * Initialize the lists and returns the GhostResponseVO
+	 * @param request HttpServletRequest object
+	 * @return The GhostResponseVO object with the selected letter and the resultant status
+	 */
 	@SuppressWarnings("unchecked")
 	private GhostResponseVO getGhostResponse(HttpServletRequest request) {
 		String string_ = request.getSession().getServletContext().getAttribute(Const.STRING_CTX_NAME).toString();
@@ -83,6 +88,13 @@ public class GhostController {
 		} 
 	}
 
+	
+	/**
+	 * Fills the lists according with the strategy of the ghost
+	 * @param string_ The current string
+	 * @param branch_ The current branch map
+	 * @param request HttpServletRequest object
+	 */
 	private void fillBranchPossibilities(String string_, Map<Character, NodeVO> branch_, 
 			HttpServletRequest request) {
 		Integer maxLength = 0;
@@ -106,6 +118,16 @@ public class GhostController {
 		}
 	}
 
+	
+	/**
+	 * Set the status and letter randomly
+	 * @param branch_ The current branch
+	 * @param branchList The selected list (4 possibilities)
+	 * @param status The resultant status
+	 * @param string_ The current string
+	 * @param request HttpServletRequest object
+	 * @return GhostResponseVO object with the selected letter and the resultant status
+	 */
 	private GhostResponseVO setStatus(Map<Character, NodeVO> branch_, List<Character> branchList, 
 			Integer status, String string_, HttpServletRequest request) {
 		GhostResponseVO ghostResponse = new GhostResponseVO();
@@ -126,6 +148,16 @@ public class GhostController {
 		return ghostResponse;
 	}
 	
+	
+	/**
+	 * Set the status and letter selecting the larger string
+	 * @param branch_ The current branch
+	 * @param branchList The selected list (4 possibilities)
+	 * @param status The resultant status
+	 * @param string_ The current string
+	 * @param request HttpServletRequest object
+	 * @return GhostResponseVO object with the selected letter and the resultant status
+	 */
 	private GhostResponseVO setLoserStatus(Map<Character, NodeVO> branch_, List<Character> branchList, 
 			String string_, HttpServletRequest request) {
 		GhostResponseVO ghostResponse = new GhostResponseVO();

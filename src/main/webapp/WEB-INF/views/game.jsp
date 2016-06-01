@@ -118,15 +118,15 @@
 	<!-- JUMBOTRON WITH STRING RESULT -->
 	<div class="jumbotron">
     	<div class="container">
-    		<div class="col-md-6" style="text-align: left;">
-    			<img src="resources/img/ghost.png" style="max-height: 80px;">
-    			<div id="messageGhost" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
+    		<div class="col-md-6 left-aligned">
+    			<img src="resources/img/ghost.png" class="player-img">
+    			<div id="messageGhost" class="alert alert-dismissible alert-success message-alert"></div>
     		</div>
-    		<div class="col-md-6" style="text-align: right;">
-	            <div id="messageHuman" class="alert alert-dismissible alert-success" style="display: none; padding-right: 20px;"></div>
-    			<img src="resources/img/player.png" style="max-height: 80px; display: inline">
+    		<div class="col-md-6 right-aligned">
+	            <div id="messageHuman" class="alert alert-dismissible alert-success message-alert"></div>
+    			<img src="resources/img/player.png" class="player-img">
     		</div>
-	      	<div style="text-align: center;">
+	      	<div class="center-aligned">
 	        	<h1 id="string">String: </h1>
       		</div>
     	</div>
@@ -134,12 +134,11 @@
 
 	<!-- HUMAN & GHOST FORM -->	
 	<div class="container">
-		<div class="col-md-4 col-md-offset-4" style="text-align: center;">
-			<form id="humanForm" class="form-inline" onsubmit="humanLetter();return false;" style="padding-bottom: 60px;">
+		<div class="col-md-4 col-md-offset-4 center-aligned">
+			<form id="humanForm" class="form-inline human-form" onsubmit="humanLetter();return false;" data-toggle="validator">
 			  <div class="form-group">
 				<label for="letter">Enter your next letter:</label>
-				<input type="text" class="form-control" id="letter" maxlength="1" 
-		        	style="text-transform: uppercase;width: 40px;display: inline;" required>
+				<input type="text" class="form-control human-input" id="letter" maxlength="1" pattern="[a-zA-Z]" required>
 		        <button type="submit" class="btn btn-success">Submit</button>
 			  </div>
 			</form>
@@ -169,16 +168,15 @@
 
 	<div class="navbar navbar-default navbar-fixed-bottom footer">
 		<div class="container">
-			<div class="col-sm-12 navbar-text">
-				<p class="text-muted">JoseManuelBereaLozano</p>
+			<div class="col-md-12 navbar-text left-aligned">
+				<p class="text-muted">Piksel ghost challenge - Jose Manuel Berea Lozano</p>
 			</div>
 		</div>
 	</div>
 
 	<script src="resources/js/jquery-1.9.1.min.js"></script>
 	<script src="resources/js/bootstrap.min.js"></script>
-	<script 
-		src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+	<script src="resources/js/bootstrapvalidator.min.js"></script>
 	<script src="resources/js/waiting-dialog.js"></script>
 	<script src="resources/js/game.js"></script>
 	<script type="text/javascript">
