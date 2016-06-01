@@ -89,11 +89,11 @@ public class GhostController {
 		
 		for(Entry<Character, NodeVO> entry : branch_.entrySet()) {
 			NodeVO childNode = entry.getValue();
-			if(childNode.isLeaf() && string_.length() < 3) {
+			if(childNode.isLeaf() && string_.length() < Const.WORD_LIMIT-1) {
 				drawBranches.add(entry.getKey());
-			} else if(childNode.isCanWin() && !childNode.isCanLose() && !(childNode.isLeaf() && string_.length() >= 3)) { // Winners
+			} else if(childNode.isCanWin() && !childNode.isCanLose() && !(childNode.isLeaf() && string_.length() >= Const.WORD_LIMIT-1)) { // Winners
 				winnerBranches.add(entry.getKey());
-			} else if(childNode.isCanWin() && childNode.isCanLose() && !(childNode.isLeaf() && string_.length() >= 3)) { // Neutral
+			} else if(childNode.isCanWin() && childNode.isCanLose() && !(childNode.isLeaf() && string_.length() >= Const.WORD_LIMIT-1)) { // Neutral
 				neutralBranches.add(entry.getKey());
 			} else if(winnerBranches.isEmpty()) { // Losers
 				if(loserBranches.isEmpty() || childNode.getMaxLength() == maxLength || maxLength == 0) {
@@ -136,7 +136,7 @@ public class GhostController {
 		nextChar = branchList.get(position);
 		logger.debug("Ghost plays character " + ghostResponse.getLetter());
 		ghostResponse.setLetter(nextChar);
-		if(branch_.get(branchList.get(position)).isLeaf() && string_.length() >= 3) {
+		if(branch_.get(branchList.get(position)).isLeaf() && string_.length() >= Const.WORD_LIMIT-1) {
 			logger.debug("WORD STATUS");
 			ghostResponse.setStatus(Const.STATUS_IS_A_WORD);
 		} else {

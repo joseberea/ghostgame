@@ -1,6 +1,9 @@
 package com.jmberea.ghostgame.util;
 
 public class Const {
+	/* WORD LIMIT */
+	public static final int WORD_LIMIT = 4;
+	
 	/* Branch name */
 	public static final String DICTIONARY_CTX_NAME = "dictionary_";
 	public static final String BRANCH_CTX_NAME = "branch_";

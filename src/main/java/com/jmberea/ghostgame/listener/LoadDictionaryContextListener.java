@@ -145,7 +145,7 @@ public class LoadDictionaryContextListener implements ServletContextListener {
 		}
 		node.setMaxLength(lineLength);
 		node.setChildren(children);
-		if (lineLength > 3) {
+		if (lineLength > Const.WORD_LIMIT-1) {
 			if (possibleWinnerBranch) {
 				node.setCanWin(true);
 			} else {
@@ -169,7 +169,7 @@ public class LoadDictionaryContextListener implements ServletContextListener {
 		if (lineLength > node.getMaxLength()) {
 			node.setMaxLength(lineLength);
 		}
-		if (lineLength > 3) {
+		if (lineLength > Const.WORD_LIMIT-1) {
 			if (possibleWinnerBranch) {
 				node.setCanWin(true);
 			} else {

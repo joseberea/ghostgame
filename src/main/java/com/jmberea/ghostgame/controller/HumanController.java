@@ -58,10 +58,10 @@ public class HumanController {
 		if(branch_.containsKey(nextChar)) {
 			status = branch_.get(nextChar);
 			if(status instanceof NodeVO) {
-				if(((NodeVO) status).getChildren().isEmpty() && string_.length() < 3) {
+				if(((NodeVO) status).getChildren().isEmpty() && string_.length() < Const.WORD_LIMIT-1) {
 					logger.debug("DRAW STATUS");
 					return Const.STATUS_DRAW;
-				} if(((NodeVO) status).isLeaf() && string_.length() >= 3) {
+				} if(((NodeVO) status).isLeaf() && string_.length() >= Const.WORD_LIMIT-1) {
 					logger.debug("WORD STATUS");
 					return Const.STATUS_IS_A_WORD;
 				} else {
