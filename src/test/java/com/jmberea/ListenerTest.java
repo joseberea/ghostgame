@@ -1,4 +1,4 @@
-
+package com.jmberea;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -55,7 +55,7 @@ public class ListenerTest {
 
 	}
 	
-    @Test
+    /*@Test
     public void onGet() throws ServletException, IOException{
         SomeServlet someServlet = PowerMock.createPartialMock(SomeServlet.class, "getServletContext");   
         ServletContext servletContext = PowerMock.createNiceMock(ServletContext.class);
@@ -71,6 +71,6 @@ public class ListenerTest {
         PowerMock.replay(someServlet, servletContext, httpServletRequest, httpServletResponse);
 
         someServlet.doGet(httpServletRequest, httpServletResponse);
-    }
+    }*/
 
 }
