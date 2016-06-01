@@ -25,8 +25,8 @@ public class HumanController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/humanLetter.htm", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Integer processHumanLetter(HttpServletRequest request, @RequestParam("nextChar") Character nextChar) {
-		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute("branch_");
-		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
+		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute(Const.DICTIONARY_CTX_NAME);
+		String string_ = request.getSession().getServletContext().getAttribute(Const.STRING_CTX_NAME).toString();
 		Object status = null;
 		if(branch_.containsKey(nextChar)) {
 			status = branch_.get(nextChar);
@@ -36,15 +36,15 @@ public class HumanController {
 				} if(((NodeVO) status).isLeaf() && string_.length() >= 3) {
 					return Const.STATUS_IS_A_WORD;
 				} else {
-					request.getSession().getServletContext().setAttribute("branch_", ((NodeVO) status).getChildren());
+					request.getSession().getServletContext().setAttribute(Const.DICTIONARY_CTX_NAME, ((NodeVO) status).getChildren());
 				}
 			} else {
-				request.getSession().getServletContext().setAttribute("branch_", branch_.get(nextChar));
+				request.getSession().getServletContext().setAttribute(Const.DICTIONARY_CTX_NAME, branch_.get(nextChar));
 			}
 		} else {
 			return Const.STATUS_NOT_EXISTS;
 		}
-		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);
+		request.getSession().getServletContext().setAttribute(Const.STRING_CTX_NAME, string_ + nextChar);
 		return Const.STATUS_CONTINUE;
 	}
 }

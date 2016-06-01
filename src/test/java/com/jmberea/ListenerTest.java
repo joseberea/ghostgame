@@ -1,76 +1,43 @@
 package com.jmberea;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import javax.servlet.ServletContextEvent;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent; 
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.annotation.Configuration;
+import org.junit.runners.JUnit4;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.jmberea.ghostgame.config.MvcConfiguration;
 import com.jmberea.ghostgame.listener.LoadDictionaryContextListener;
+import com.jmberea.ghostgame.util.Const;
+
+import junit.framework.Assert;
 
 @ContextConfiguration(classes = MvcConfiguration.class)
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(JUnit4.class)
 public class ListenerTest {
 
-	public ListenerTest() {
+	MockServletContext servletContext;
+	ServletContextEvent event;
+
+	@Before
+	public void setUp() {
+		servletContext = new MockServletContext();
+		event = new ServletContextEvent(servletContext);
 	}
-
-	@Mock
-	ServletContextEvent mockEvent;
-
-	@Mock
-	ServletContext mockServletContext;
-	@Mock
-	Configuration mockConfig;
-
-	@Mock
-	WebApplicationContext mockWebContext;
-
-	@Mock
-	MockServletContext ctx;
 
 	@Test
-	public void testContextInitialized() {
+	public void testGetIntegerParameter() {
+		LoadDictionaryContextListener listener = new LoadDictionaryContextListener();
+		listener.contextInitialized(event);
 
-		when(mockEvent.getServletContext()).thenReturn(mockServletContext);
-
-		when(mockServletContext.getAttribute(Matchers.anyString())).thenReturn(mockWebContext);
-
-		LoadDictionaryContextListener instance = new LoadDictionaryContextListener();
-		instance.contextInitialized(mockEvent);
-
-		verify(mockEvent, times(1)).getServletContext();
-
+		Assert.assertNotNull(event.getServletContext());
+		Assert.assertNotNull(event.getServletContext().getAttribute(Const.DICTIONARY_CTX_NAME));
+		
+		listener.contextDestroyed(event);
+		Assert.assertNull(event.getServletContext().getAttribute(Const.DICTIONARY_CTX_NAME));
 	}
-	
-    /*@Test
-    public void onGet() throws ServletException, IOException{
-        SomeServlet someServlet = PowerMock.createPartialMock(SomeServlet.class, "getServletContext");   
-        ServletContext servletContext = PowerMock.createNiceMock(ServletContext.class);
-        HttpServletRequest httpServletRequest = PowerMock.createNiceMock(HttpServletRequest.class);
-        HttpServletResponse httpServletResponse = PowerMock.createNiceMock(HttpServletResponse.class);
-
-        someServlet.getServletContext();
-        PowerMock.expectLastCall().andReturn(servletContext);
-
-        servletContext.getAttribute("test");
-        PowerMock.expectLastCall().andReturn("hello");
-
-        PowerMock.replay(someServlet, servletContext, httpServletRequest, httpServletResponse);
-
-        someServlet.doGet(httpServletRequest, httpServletResponse);
-    }*/
 
 }

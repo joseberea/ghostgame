@@ -34,8 +34,8 @@ public class GhostController {
 		List<Character> neutralBranches = new ArrayList<Character>();
 		List<Character> loserBranches = new ArrayList<Character>();
 		List<Character> drawBranches = new ArrayList<Character>();
-		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute("branch_");
-		String string_ = request.getSession().getServletContext().getAttribute("string_").toString();
+		Map<Character, NodeVO> branch_ = (Map<Character, NodeVO>) request.getSession().getServletContext().getAttribute(Const.DICTIONARY_CTX_NAME);
+		String string_ = request.getSession().getServletContext().getAttribute(Const.STRING_CTX_NAME).toString();
 		Integer maxLength = 0;
 		
 		for(Entry<Character, NodeVO> entry : branch_.entrySet()) {
@@ -80,8 +80,8 @@ public class GhostController {
 		nextChar = branchList.get(position);
 		ghostResponse.setLetter(nextChar);
 		ghostResponse.setStatus(status);
-		request.getSession().getServletContext().setAttribute("branch_", branch_);
-		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);
+		request.getSession().getServletContext().setAttribute(Const.DICTIONARY_CTX_NAME, branch_);
+		request.getSession().getServletContext().setAttribute(Const.STRING_CTX_NAME, string_ + nextChar);
 		return ghostResponse;
 	}
 	
@@ -99,10 +99,10 @@ public class GhostController {
 		} else {
 			branch_ = branch_.get(branchList.get(position)).getChildren();
 			ghostResponse.setStatus(Const.STATUS_CONTINUE);		
-			request.getSession().getServletContext().setAttribute("branch_", branch_);
+			request.getSession().getServletContext().setAttribute(Const.DICTIONARY_CTX_NAME, branch_);
 			
 		}
-		request.getSession().getServletContext().setAttribute("string_", string_ + nextChar);
+		request.getSession().getServletContext().setAttribute(Const.STRING_CTX_NAME, string_ + nextChar);
 		return ghostResponse;
 	}
 	
