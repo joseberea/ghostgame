@@ -161,7 +161,6 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					<warName>GhostGame</warName>
 				</configuration>
 			</plugin>
 		</plugins>
