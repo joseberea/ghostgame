@@ -24,21 +24,21 @@ import com.jmberea.ghostgame.vo.NodeVO;
  * When the method processHumanLetter is called, it retrieves the branch
  * 	and the current string stored in the servletContext.
  * 
- * If the branch does not contains the character given by the human player
+ * If the branch does not contain the character given by the human player it
  * 	returns the STATUS_NOT_EXISTS status because the resultant string is not
  * 	in the dictionary.
  * 
- * If the branch contains the character there are have three possibilities:
+ * If the branch contains the character there are three possibilities:
  * 
- * 	1.- The current string is a word shorter than three and the node has no 
+ * 	1.- The current string is a word shorter than WORD_LIMIT-1 and the node has no 
  * 		children. Then we have the STATUS_DRAW status, because there are no
  * 		more movements.
  * 
- *	2.- The current string is a word bigger than three and the node is a 
+ *	2.- The current string is a word bigger than WORD_LIMIT-1 and the node is a 
  *		leaf. Then we have the STATUS_IS_A_WORD status and the player loses
  *		because the string matches a word.
  *
- *	3.- The current string does not matches the first or second point. Then 
+ *	3.- The current string does not match the first or second point. Then 
  *		the game continues with the STATUS_CONTINUE status.
  */
 

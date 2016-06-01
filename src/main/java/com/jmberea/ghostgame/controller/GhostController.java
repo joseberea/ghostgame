@@ -32,18 +32,18 @@ import com.jmberea.ghostgame.vo.NodeVO;
  * 	to the current string and stores them into a four different list
  * 
  * 	1.- drawBranches: Stores the draw nodes. If the node is a leaf and
- * 		the current string length is shorter than three, we have a draw
+ * 		the current string length is shorter than WORD_LIMIT-1, we have a draw
  * 		node.
  * 
- * 	2.- winnerBranches: Stores the winner nodes. A node is winner when it
+ * 	2.- winnerBranches: Stores the winner nodes. A node is a winner when it
  * 		is not a draw one and is a canWin node and not a canLose one.
  * 
  * 	3.- neutralBranches: Stores the neutral nodes. Neutral node is canWin
- * 		and canLose node not stored in the winner o draw list.
+ * 		and canLose node and not stored in the winner or draw list.
  * 
- *  4.- loserBranches: Stores the loser nodes. A not winner, draw or neutral node.
+ *  4.- loserBranches: Stores the loser nodes. A non winner, draw or neutral node.
  *  
- *  The ghost select a node of one of the list winnerBranches(random), neutralBranches (random),
+ *  The ghost selects a node of one of the list winnerBranches(random), neutralBranches (random),
  *   drawBranches (random) or loserBranches (selecting the larger string) using this order.
  */
 
