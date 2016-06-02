@@ -10,10 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Ghost Game</title>
-<link id="bootstrap-style" href="resources/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link id="bootstrap-style" href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link id="bootstrap-style" href="resources/css/font-awesome.min.css" rel="stylesheet">
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <script type="text/javascript">
