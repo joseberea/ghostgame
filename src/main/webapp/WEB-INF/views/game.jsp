@@ -17,15 +17,23 @@
 <link href="resources/css/custom.css" rel="stylesheet">
 
 <script type="text/javascript">
+	var thinking = '<fmt:message key="text.thinking"/>';
+	var say = '<fmt:message key="text.say"/>';
+	var lose = '<fmt:message key="text.lose"/>';
+	var win = '<fmt:message key="text.win"/>';
+	
 	function matchesWord() {
-		$('#modalBody').html("The string matches a word!");
+		var matches = '<fmt:message key="text.matches"/>';
+		$('#modalBody').html(matches);
 		$('#modalDialog').modal('show');
 		$('#modalWord').html($("#string").html());
 	}
 	
 	function matchesShortWord() {
-		$('#modalLabel').html("Draw ....");
-		$('#modalBody').html("The string matches a word, but is shorter than 4!");
+		var matchesShorter = '<fmt:message key="text.matchesShorter"/>';
+		var draw = '<fmt:message key="text.draw"/>';
+		$('#modalLabel').html(draw);
+		$('#modalBody').html(matchesShorter);
 		$('#modalDialog').modal('show');
 		$('#modalWord').html($("#string").html());
 	}
@@ -40,13 +48,13 @@
 				var letter = response.letter;
 				$("#string").append(letter);
 				if(status == ${stauts_is_a_word}) {
-					$('#modalLabel').html("You win ....");
+					$('#modalLabel').html(win);
 					matchesWord();
 				} else if(status == ${stauts_continue}) {
 					$("#humanForm").show();
 					$("#ghostTurn").hide();
 					$("#messageGhost").css('display', 'inline');
-					$("#messageGhost").html("I say '" + letter + "'");
+					$("#messageGhost").html(say + " '" + letter + "'");
 				} else if(status == ${stauts_draw}) {
 					matchesShortWord();
 				}
@@ -56,7 +64,7 @@
 	}
 	
 	function ghostLetter() {
-		waitingDialog.show('Thinking ....', {
+		waitingDialog.show(thinking, {
 			dialogSize : 'md',
 			progressType : 'info'
 		});
@@ -64,10 +72,11 @@
 	}
 
 	function humanLetterAjax() {
+		var notExists = '<fmt:message key="text.notExists"/>';
 		$("#string").append($("#letter").val());
 		$("#messageGhost").css('display', 'none');
 		$("#messageHuman").css('display', 'inline');
-		$("#messageHuman").html("I say '" + $("#letter").val() + "'");
+		$("#messageHuman").html(say + " '" + $("#letter").val() + "'");
 		$.ajax({
 			type : "POST",
 			url : "humanLetter.htm",
@@ -77,12 +86,12 @@
 			},
 			success : function(status) {
 				if(status == ${stauts_not_exists}) {
-					$('#modalLabel').html("You lose ....");
-					$('#modalBody').html("Sorry the string is not in the dictionary!");
+					$('#modalLabel').html(lose);
+					$('#modalBody').html(notExists);
 					$('#modalWord').html($("#string").html());
 					$('#modalDialog').modal('show');
 				} else if(status == ${stauts_is_a_word}) {
-					$('#modalLabel').html("You lose ....");
+					$('#modalLabel').html(lose);
 					matchesWord();
 				} else if(status == ${stauts_continue}) {
 					$("#humanForm").hide();
@@ -96,7 +105,7 @@
 	}
 	
 	function humanLetter() {
-		waitingDialog.show('Thinking ....', {
+		waitingDialog.show(thinking, {
 			dialogSize : 'md',
 			progressType : 'info'
 		});
@@ -110,7 +119,7 @@
 	<div class="navbar navbar-default navbar-fixed">
 		<div class="container">
 			<div class="navbar-header">
-				<a href="/" class="navbar-brand">GHOST GAME CHALLENGE</a>
+				<a href="/" class="navbar-brand"><fmt:message key="title.title"/></a>
 			</div>
 		</div>
 	</div>
@@ -127,7 +136,7 @@
     			<img src="resources/img/player.png" class="player-img">
     		</div>
 	      	<div class="center-aligned">
-	        	<h1 id="string">String: </h1>
+	        	<h1 id="string"><fmt:message key="label.string"/>:&nbsp;</h1>
       		</div>
     	</div>
     </div>	
@@ -137,12 +146,12 @@
 		<div class="col-md-4 col-md-offset-4 center-aligned">
 			<form id="humanForm" class="form-inline human-form" onsubmit="humanLetter();return false;" data-toggle="validator">
 			  <div class="form-group">
-				<label for="letter">Enter your next letter:</label>
+				<label for="letter"><fmt:message key="label.getLetter"/>:</label>
 				<input type="text" class="form-control human-input" id="letter" maxlength="1" pattern="[a-zA-Z]" required>
-		        <button type="submit" class="btn btn-success">Submit</button>
+		        <button type="submit" class="btn btn-success"><fmt:message key="label.submit"/></button>
 			  </div>
 			</form>
-			<button id="ghostTurn" class="btn btn-success" onclick="ghostLetter()">Ghost turn</button>
+			<button id="ghostTurn" class="btn btn-success" onclick="ghostLetter()"><fmt:message key="label.ghostTurn"/></button>
 		</div>
 	</div>
 
@@ -159,7 +168,7 @@
 	        <h2 id="modalBody"></h2>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-success" data-dismiss="modal">Let's play again!</button>
+	        <button type="button" class="btn btn-success" data-dismiss="modal"><fmt:message key="label.playAgain"/></button>
 	      </div>
 	    </div>
 	  </div>
@@ -169,7 +178,7 @@
 	<div class="navbar navbar-default navbar-fixed-bottom footer">
 		<div class="container">
 			<div class="col-md-12 navbar-text left-aligned">
-				<p class="text-muted">Piksel ghost challenge - Jose Manuel Berea Lozano</p>
+				<p class="text-muted"><fmt:message key="footer.footer"/></p>
 			</div>
 		</div>
 	</div>
@@ -178,17 +187,17 @@
 	<script src="resources/js/bootstrap.min.js"></script>
 	<script src="resources/js/bootstrapvalidator.min.js"></script>
 	<script src="resources/js/waiting-dialog.js"></script>
-	<script src="resources/js/game.js"></script>
 	<script type="text/javascript">
 		$( document ).ready(function() {
 			$('#modalDialog').on('hidden.bs.modal', function () {
 				location.reload(true);
 			})
 			$('#humanForm input[type=text]').on('change invalid', function() {
+				var errorLetter = '<fmt:message key="error.letter"/>';
 			    var textfield = $(this).get(0);
 			    textfield.setCustomValidity('');
 			    if (!textfield.validity.valid) {
-			      textfield.setCustomValidity('Please enter a letter... The Ghost is waiting!');
+			      textfield.setCustomValidity(errorLetter);
 			    }
 			});
 			$("#ghostTurn").hide();

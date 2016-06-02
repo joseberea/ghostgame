@@ -8,7 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src/test/resources/log4j2"/>
 	<classpathentry excluding="log4j2/" kind="src" path="src/test/resources"/>
-	<classpathentry kind="src" path="src/main/webapp/resources/log4j2"/>
 	<classpathentry excluding="log4j2/" kind="src" path="src/main/webapp/resources"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>

@@ -1,9 +1,11 @@
 package com.jmberea.ghostgame.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -28,6 +30,14 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		resolver.setSuffix(".jsp");
 		return resolver;
 	}
+	
+	@Bean
+	public MessageSource messageSource() {
+	    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+	    messageSource.setBasename("resources/i18n/messages");
+	    messageSource.setDefaultEncoding("UTF-8");
+	    return messageSource;
+	} 
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
