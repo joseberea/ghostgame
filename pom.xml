@@ -144,13 +144,13 @@
 	</repositories>
 
 	<build>
+		<finalName>ghostgame</finalName>	
 		<resources>
 			<resource>
+				<directory>src/main/webapp/resources/log4j2</directory>
+			</resource>
+			<resource>
 				<directory>src/main/webapp/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>log4j2/*.*</include>
-				</includes>
 			</resource>
 		</resources>
 		<plugins>
